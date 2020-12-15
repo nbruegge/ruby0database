@@ -97,6 +97,8 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 #app = dash.Dash(__name__) 
 
+server = app.server
+
 #app.layout = dash_table.DataTable(
 #    id='table',
 #    columns=[{"name": i, "id": i} for i in df.columns],
