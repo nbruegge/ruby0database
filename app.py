@@ -15,11 +15,11 @@ import urllib.request
 import plotly.express as px
 import argparse
 
-parser = argparse.ArgumentParser(description='Setup dash table', formatter_class=argparse.RawTextHelpFormatter)
-
-parser.add_argument('--port', metavar='port', type=int, default=8050,
-                    help='port for python server')
-iopts = parser.parse_args()
+#parser = argparse.ArgumentParser(description='Setup dash table', formatter_class=argparse.RawTextHelpFormatter)
+#
+#parser.add_argument('--port', metavar='port', type=int, default=8050,
+#                    help='port for python server')
+#iopts = parser.parse_args()
 
 def table_type(df_column):
     # Note - this only works with Pandas >= 1.0.0
@@ -347,6 +347,6 @@ def update_graph(xaxis_column_name, yaxis_column_name,
 
 if __name__ == '__main__':
     app.run_server(debug=True,
-                   port=iopts.port,
+                   #port=iopts.port,
                    #port=8050,
                   )
