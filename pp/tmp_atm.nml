@@ -1,0 +1,299 @@
+!
+&coupling_mode_nml
+  coupled_mode     = .TRUE.
+/
+&parallel_nml
+ nproma            = 16
+ num_io_procs      = 0
+ num_prefetch_proc = 0
+ pio_type          = 0
+/
+&grid_nml
+ dynamics_grid_filename = "icon_grid_0013_R02B04_G.nc"
+/
+&run_nml
+ num_lev          = 47          ! number of full levels
+ modelTimeStep    = "PT15M" ! model time step in ISO-format
+ ltestcase        = .FALSE.     ! run testcase
+ ldynamics        = .TRUE.      ! dynamics
+ ltransport       = .TRUE.      ! transport
+ iforcing         = 2           ! 0: none, 1: HS, 2: ECHAM, 3: NWP
+ output           = 'nml'
+ msg_level        = 12          ! level of details report during integration 
+ restart_filename = "dap7031-r0_restart_atm_<rsttime>.nc"
+ activate_sync_timers = .TRUE.
+ profiling_output = 1           ! aggregated: 1; detailed: 2; in files: 3
+/
+&extpar_nml
+ itopo            = 1           ! 1: read topography from the grid file
+ itype_lwemiss    = 0
+/
+&initicon_nml
+ init_mode        = 2           ! 2: initialize from IFS analysis
+ ifs2icon_filename= "ifs2icon.nc"
+/
+&nonhydrostatic_nml
+ ndyn_substeps    = 8 ! dtime/dt_dyn
+ damp_height      = 50000.      ! [m]
+ rayleigh_coeff   = 0.1000      ! set to 0.1001 for rerun with little change
+ vwind_offctr     = 0.2
+ divdamp_fac      = 0.004
+/
+&interpol_nml
+ rbf_scale_mode_ll = 1
+/
+&sleve_nml
+ min_lay_thckn    = 40.         ! [m]
+ top_height       = 83000.      ! [m]
+ stretch_fac      = 0.9
+ decay_scale_1    = 4000.       ! [m]
+ decay_scale_2    = 2500.       ! [m]
+ decay_exp        = 1.2
+ flat_height      = 16000.      ! [m]
+/
+&diffusion_nml
+/
+&transport_nml
+ tracer_names     = 'hus','clw','cli'
+ ivadv_tracer     =    3 ,   3 ,   3
+ itype_hlimit     =    3 ,   4 ,   4
+ ihadv_tracer     =   52 ,   2 ,   2
+/
+&echam_phy_nml
+!
+! domain 1
+! --------
+!
+! atmospheric phyiscs (""=never)
+ dt_rad = "PT90M"
+ dt_vdf = "PT15M"
+ dt_cnv = "PT15M"
+ dt_cld = "PT15M"
+ dt_gwd = "PT15M"
+ dt_sso = "PT15M"
+!
+! atmospheric chemistry (""=never)
+ dt_mox = "PT15M"
+ dt_car = ""
+ dt_art = ""
+!
+! surface (.TRUE. or .FALSE.)
+ ljsb   = .TRUE.
+ lamip  = .FALSE.
+ lice   = .TRUE.
+ lmlo   = .FALSE.
+ llake  = .TRUE.
+!
+! fix negative humidity (default=0, no correction)
+ iqneg_d2p = 0
+ iqneg_p2d = 0
+/
+&echam_rad_nml
+!
+! domain 1
+! --------
+!
+ isolrad    =  6
+ irad_h2o   =  1
+ irad_co2   =  2
+ irad_ch4   =  2
+ irad_n2o   =  2
+ irad_o3    =  2          ! constant annual cycle climatology
+ irad_o2    =  2
+ irad_cfc11 =  0
+ irad_cfc12 =  0
+ irad_aero  =  0
+ vmr_co2    = 284.317e-6  ! constant volume mixing ration
+ vmr_ch4    = 808.249e-9  ! constant volume mixing ration
+ vmr_n2o    = 273.021e-9  ! constant volume mixing ration
+ lyr_perp   =  .TRUE.
+ yr_perp    =  1850
+/
+&echam_gwd_nml
+ emiss_lev = 10
+ rmscon = 0.87
+ kstar = 5.0e-5
+ m_min = 0.0
+/
+&echam_sso_nml
+ gkdrag     = 0.03      ! default: 0.05
+ gkwake     = 0.03      ! default: 0.05
+ gklift    = 0.7        ! default: 0.
+/
+&echam_vdf_nml
+ pr0        = 1.0       ! neutral limit Prandtl no - default:  1.0
+ c_n        = 2.0      ! default: 2.0
+ fsl       = 0.5       ! default: 0.4
+ c_f       = 0.185     ! default: 0.185
+ fbl       = 3.0       ! default: 3.0
+ f_tau0    = 0.17      ! default: 0.17
+ wmc       = 0.5       ! default: 0.5
+/
+&echam_cnv_nml
+ entrpen    = 0.0003    ! default: 0.0003    (old default:  0.0002)
+ cmfctop    = 0.1       ! default: 0.1       (old default:  0.2)
+ entrscv    = 0.0003    ! default: 0.0003    (old default:  0.003)
+/
+&echam_cld_nml
+ csecfrl    = 5.0e-6    ! threshold for ice and water in clouds, default 5.e-6
+ ccraut     = 2.0       ! default: 2.0      (default was 15.0)
+ ccsaut     = 2.0       ! default: 2.0      (default was 95.0)
+ cauloc     = 1.0       ! default: 1.0      (default was 10.0)
+/
+&echam_cov_nml
+ crs        = 0.958     ! Critical relative humidity at surface, default 0.968
+ crt        = 0.80      ! Critical relative humidity at toa, default 0.8
+/
+&sea_ice_nml
+ albs                           = 0.85       ! Albedo of snow (not melting)              !  def: 0.85
+ albsm                          = 0.75      ! Albedo of snow (melting)                  !  def: 0.70
+ albi                           = 0.80       ! Albedo of ice (not melting)               !  def: 0.75
+ albim                          = 0.75      ! Albedo of ice (melting)                   !  def: 0.70
+ !hci_layer                      = 0.4       ! Thickness of stabilizing constant heat capacity layer (def=0.1)
+/
+&io_nml
+  output_nml_dict  = "dict.dap7031-r0"
+  netcdf_dict      = "dict.dap7031-r0"
+  itype_pres_msl   = 4
+  restart_file_type= 5
+! restart_write_mode = "joint procs multifile"  ! not necessary/useful in default r2b4 setup
+! lnetcdf_flt64_output = .TRUE.   ! 64 bit output in all files
+  lkeep_in_sync = .TRUE.          ! sync after each timestep
+! lkeep_in_sync = .FALSE.
+/
+&dbg_index_nml
+  idbg_mxmn        = 1                        ! initialize MIN/MAX  debug output
+  idbg_val         = 0                        ! initialize one cell debug output
+  idbg_slev        = 1                        ! initialize start level for debug output
+  idbg_elev        = 2                        ! initialize end level for debug output
+  dbg_lat_in       =  30.0                    ! latitude location of one cell debug output
+  dbg_lon_in       = -30.0                    ! longitude location of one cell debug output
+  str_mod_tst      ='InterFaceOce'            ! define modules to print out in debug mode
+/
+&output_nml
+ output_filename  = "dap7031-r0_atm_mon"
+ filename_format  = "<output_filename>_<datetime2>"
+ filetype         = 5                                ! output format: 2=GRIB2, 4=NETCDFv2, 5=NETCDFv4
+ remap            = 0
+ mode             = 1                                ! 1: forecast mode (relative t-axis), 2: climate mode (absolute t-axis)
+ operation        = 'mean'                           ! mean over output interval
+ output_grid      = .FALSE.
+ output_start     = "1700-01-01T00:00:00Z"
+ output_end       = "1900-01-01T00:00:00Z"
+ output_interval  = "P1M"
+ file_interval    = "P20Y"
+ include_last     = .FALSE.
+ ml_varlist       = 'tas_gmean','rsdt_gmean','rsut_gmean','rlut_gmean','radtop_gmean',
+                    'prec_gmean','evap_gmean','fwfoce_gmean'
+/
+&output_nml 
+ filetype         = 5                                ! output format: 2=GRIB2, 4=NETCDFv2, 5=NETCDFv4
+ output_filename  = "dap7031-r0_atm_dbg"
+ filename_format  = "<output_filename>_<levtype_l>_<datetime2>"
+ remap            = 0
+ operation        = 'mean'
+ output_grid      = .TRUE.
+ output_start     = "1700-01-01T00:00:00Z"
+ output_end       = "1900-01-01T00:00:00Z"
+ output_interval  = "P1M"
+ file_interval    = "P20Y"
+ include_last     = .FALSE.
+ ml_varlist       = 'orog'    , 'ps'      ,
+                    'frac_wtr', 'frac_ice', 'frac_lnd', 'alake', 'lake_ice_frc',
+                    'hs_icecl', 'ts_icecl', 'qtop_icecl','qbot_icecl',
+                    'sic'     , 'sit'     , 'sic_icecl', 'sit_icecl',
+                    'clt'     , 'psl'     , 'tas'     , 'ts'      ,
+                    'pr'      , 'prw'     , 'cllvi'   , 'clivi'   ,
+                    'prlr'    , 'prls'    , 'prcr'    , 'prcs'    ,
+                    'tauu'    , 'tauv'    , 'albedo'  ,
+                    'albedo_wtr', 'albedo_ice', 'albedo_lnd',
+                    'albvisdir','albvisdif' , 'albnirdir' , 'albnirdif',
+                    'albvisdir_ice', 'albvisdir_wtr', 'albvisdir_lnd',
+                    'rvds_dir','rvds_dif','rnds_dir','rnds_dif','rvus','rnus',
+                    'hfls'    , 'hfss'    , 'evspsbl' ,
+                    'hfls_wtr', 'hfls_ice', 'hfls_lnd',
+                    'hfss_wtr', 'hfss_ice', 'hfss_lnd',
+                    'rsns_wtr', 'rsns_ice', 'rsns_lnd',
+                    'rlns_wtr', 'rlns_ice', 'rlns_lnd', 
+                    'rsut'    , 'rsutcs'  , 'rlut'    , 'rlutcs',
+                    'rsds'    , 'rsdscs'  , 'rlds'    , 'rldscs',
+                    'rsus'    , 'rsuscs'  , 'rlus'    , 'rsdt'  ,
+                    'evspsbl_wtr', 'evspsbl_ice', 'evspsbl_lnd',
+                    'ts_wtr'  , 'ts_ice'  , 'ts_lnd'  ,
+                    'tauu_wtr', 'tauu_ice', 'tauu_lnd',
+                    'tauv_wtr', 'tauv_ice', 'tauv_lnd',
+                    'sfcwind' , 'uas'     , 'vas'
+/
+&output_nml
+ output_filename  = "dap7031-r0_atm_3d"
+ filename_format  = "<output_filename>_<levtype_l>_<datetime2>"
+ filetype         = 5
+ remap            = 0
+ operation        = 'mean'
+ output_grid      = .FALSE.
+ output_start     = "1700-01-01T00:00:00Z"
+ output_end       = "1900-01-01T00:00:00Z"
+ output_interval  = "P1M"
+ file_interval    = "P20Y"
+ include_last     = .FALSE.
+ ml_varlist       = 'zg'      ,
+                    'ps'      , 'pfull'   ,
+                    'rho'     , 'ta'      ,
+                    'ua'      , 'va'      , 'wap'     ,
+                    'hus'     , 'clw'     , 'cli'     ,
+                    'hur'     , 'cl'      ,
+!                    'qo3_phy' ,
+/
+&output_nml
+ output_filename  = "dap7031-r0_atm_2d"
+ filename_format  = "<output_filename>_<levtype_l>_<datetime2>"
+ filetype         = 5
+ remap            = 0
+ operation        = 'mean'
+ output_grid      = .FALSE.
+ output_start     = "1700-01-01T00:00:00Z"
+ output_end       = "1900-01-01T00:00:00Z"
+ output_interval  = "P1M"
+ file_interval    = "P20Y"
+ include_last     = .FALSE.
+ ml_varlist       = 'orog'    ,
+                    'ps'      , 'psl'     ,
+                    'cosmu0'  ,
+                    'rsdt'    ,
+                    'rsut'    , 'rsutcs'  , 'rlut'    , 'rlutcs'  ,
+                    'rsds'    , 'rsdscs'  , 'rlds'    , 'rldscs'  ,
+                    'rsus'    , 'rsuscs'  , 'rlus'    ,
+                    'ts'      ,
+                    'sic'     , 'sit'     ,
+                    'albedo'  ,
+                    'clt'     ,
+                    'prlr'    , 'prls'    , 'prcr'    , 'prcs'    ,
+                    'pr'      , 'prw'     , 'cllvi'   , 'clivi'   ,
+                    'hfls'    , 'hfss'    , 'evspsbl' ,
+                    'tauu'    , 'tauv'    ,
+                    'tauu_sso', 'tauv_sso', 'diss_sso',
+                    'sfcwind' , 'uas'     , 'vas'     ,
+                    'tas'     , 'dew2'    ,
+                    'ptp'
+/
+&output_nml
+ filetype         = 5                                ! output format: 2=GRIB2, 4=NETCDFv2, 5=NETCDFv4
+ output_filename  = "dap7031-r0_lnd_dbg"
+ filename_format  = "<output_filename>_<levtype_l>_<datetime2>"
+ remap            = 0
+ operation        = 'mean'
+ output_grid      = .TRUE.
+ output_start     = "1700-01-01T00:00:00Z"
+ output_end       = "1900-01-01T00:00:00Z"
+ output_interval  = "P1M"
+ file_interval    = "P20Y"
+ include_last     = .FALSE.
+ ml_varlist       = 'fract_box',
+                    'seb_t_box'                   , 'seb_qsat_star_box'      ,
+                    'rad_alb_vis_box'             , 'rad_alb_nir_box'        ,
+                    'rad_rad_srf_net_box'         , 'rad_lw_srf_net_box'     , 'rad_sw_srf_net_box',
+                    'seb_latent_hflx_box'         , 'seb_sensible_hflx_box'  , 'pheno_lai_box'     ,
+                    'hydro_evapotrans_box'        , 'hydro_w_soil_column_box',
+                    'hydro_runoff_box'            , 'hydro_drainage_box'     ,
+                    'hydro_discharge_ocean_box'   , 'hydro_discharge_box'    ,
+/
