@@ -18,6 +18,12 @@ To derive the database data use `pp/pp_derive_ruby0_database.py`
 
 Information for Heroku deployment taken from here: https://dash.plotly.com/deployment
 
+If new python packages were installed do first:
+
+```
+pip freeze > requirements.txt
+```
+
 Update heroku:
 
 ```
