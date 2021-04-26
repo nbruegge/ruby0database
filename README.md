@@ -10,11 +10,19 @@ https://gitlab.dkrz.de/m300602/ruby0database
 
 ## Maintenance:
 
+See Heroku logs:
+
+```
+heroku logs --tail
+```
+
 ### Derive database data
 
 To derive the database data use `pp/pp_derive_ruby0_database.py`
 
 ### Heroku deployment steps
+
+!!! Does not work from Mistral, do from local computer.
 
 Information for Heroku deployment taken from here: https://dash.plotly.com/deployment
 
