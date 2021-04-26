@@ -183,6 +183,7 @@ for nn in range(df.shape[0]):
   if df.loc[nn,'gmredi_configuration']==0:
     df.loc[nn, 'k_tracer_gm_kappa_parameter'] = 0.
     df.loc[nn, 'k_tracer_isoneutral_parameter'] = 0.
+df.loc[df['gkdrag'].isnull(), 'gkdrag'] = 0.05
 
 # --- delete parameters which do not change for all simulations
 dind = []
