@@ -103,7 +103,10 @@ for nn in range(df.shape[0]):
     lines = f.readlines()
     f.close()
     for kk in range(len(lines)):
-      lines[kk] = re.sub('.*%',' ',lines[kk])
+      # delete lines with comments in namelist (line which starts with !)
+      #lines[kk] = re.sub(' *!.*', '', lines[kk])
+      # replace everything between echam_ and % 
+      lines[kk] = re.sub('echam_.*%',' ',lines[kk])
     #txt2 = re.sub('echam_sso_config\(:\)','echam_sso_config(1)', txt)
     f = open('tmp_atm.nml', 'w')
     #f.write(txt2)
@@ -112,12 +115,21 @@ for nn in range(df.shape[0]):
   else:
     print(f'::: Warning: {fpath_nml} does not exist!:::')
     continue
+  #print(f'nn = {nn}, run = {df.run[nn]}')
+  #if df.run[nn]=='slo1235':
+  #  print('halt stop')
+  #  sys.exit()
 
   #try:
   if True:
     # ------ open namelist
     #nml = f90nml.read(fpath_nml)
     nml = f90nml.read('tmp_atm.nml')
+
+    #print(f'nn = {nn}, run = {df.run[nn]}')
+    #if df.run[nn]=='slo1235':
+    #  print('halt stop')
+    #  sys.exit()
     
     # ------ go through all sections (sub-namelists)
     D = dict()
@@ -322,7 +334,7 @@ for col in df.columns.tolist():
     pass
 
 #fpath = "./out_gather_parameter_new.csv"
-fpath = f"../csv/ruby0_db_v002.csv"
+fpath = f"../csv/ruby0_db_v003.csv"
 print(f'Writing file {fpath}')
 df.to_csv(fpath)
 
