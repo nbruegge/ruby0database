@@ -50,7 +50,7 @@ def table_type(df_column):
 
 # --- load csv
 #df = pd.read_csv('./out_gather_parameter_new.csv')
-df = pd.read_csv('csv/ruby0_db_v002.csv')
+df = pd.read_csv('csv/ruby0_db_v003.csv')
 df = df.drop('Unnamed: 0', axis=1)
 
 # --- add numbers to column name
