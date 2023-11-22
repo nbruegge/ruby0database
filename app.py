@@ -111,11 +111,11 @@ app.layout = html.Div([
 
     # --- intro text
     html.Div(dcc.Markdown(children='''
-        Overview of RUBY-0 experiments, information taken from [here](https://code.mpimet.mpg.de/projects/ruby/wiki/Parameter_Tuning_Experiments).
+        Overview of RUBY-0 experiments. See Jungclaus et al. for more details ([https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021MS002813]).
     ''')),
 
     # --- column input
-    html.Div("Choose which numbers should be displayed (e.g. 1,3,5) and press 'Submit'!"),
+    html.Div("Choose which columns should be displayed (e.g. 1,3,5) and press 'Submit'!"),
     html.Div([
               dcc.Input(id='id_col_select', value='', type='text', style={'width':'30%'}),
               html.Button(id='submit-button-state', n_clicks=0, children='Submit'),
@@ -259,7 +259,8 @@ def update_output(n_clicks, input1):
     try:
       icols = [int(x) for x in input1.split(',')]
       df_show = df.iloc[:,icols]
-      result = u'''The Button has been pressed {} times, Input 1 is "{}"'''.format(n_clicks, input1)
+      #result = u'''The Button has been pressed {} times, Input 1 is "{}"'''.format(n_clicks, input1)
+      result = u'''Input 1 is "{}"'''.format(input1)
     except:
       result = f'Nothing is done: There was a problem with your input: {input1}'
       df_show = df.copy()
