@@ -3,12 +3,24 @@
 ruby0database is a simple tool to access some ICON Ruby0 namelist and easy
 parameter data.
 The main product is a dash web application which can be found here:
-https://ruby0overview.herokuapp.com/
+https://ruby0database.onrender.com
 
 ruby0database is maintained here:
 https://gitlab.dkrz.de/m300602/ruby0database
 
-## Maintenance:
+## Maintenance via Github:
+
+Render.com settings can be changed here: https://dashboard.render.com/web/srv-clet9c6f27hc73bgabo0
+
+### Update procedure:
+
+* commit changes
+* push to github `git push github master`
+* on render.com choose: `Manual Deplay` and `Deploy latest commit`
+
+## Outdated maintenance on HEROKU:
+
+ruby0database has moved from HEROKU to render.com
 
 See Heroku logs:
 
